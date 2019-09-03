@@ -11,6 +11,6 @@ import java.util.TimeZone;
 public class WootubeApplication {
     public static void main(String[] args) {
         SpringApplication.run(WootubeApplication.class, args);
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("KST"));
     }
 }
