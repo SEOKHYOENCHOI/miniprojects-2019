@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/config :: configFragment"/>
+    <title>Wootube</title>
+    <link href="/css/video-edit.css" rel="stylesheet">
+</head>
+<body>
+<div class="app">
+    <th:block th:replace="fragments/video-header :: videoHeaderFragment"/>
+
+    <div class="edit-container pdd-top-75">
+        <form id="video-form" enctype="multipart/form-data"
+              method="post"
+              th:action="${#strings.isEmpty(video)? '/videos/new' : #strings.concat('/videos/', video.id)}"
+              onsubmit="return submitForm();">
+            <input name="_method" th:if="not ${#strings.isEmpty(video)}" type="hidden" value="PUT">
+            <input type="hidden" name="writerId" th:value="${session.user.id}">
+            <div class="row">
+                <div class="video-enroll-div col-md-8">
+                    <div class="video-contents">
+                        <div class="image-upload">
+                            <label for="file-input">
+                                <img class="upload-image" id="upload-image" src="/images/logo/youtube-upload-logo.png"
+                                     onmouseover="hover(this);" onmouseout="unHover(this);" alt="upload_img"/>
+                            </label>
+                        </div>
+                        <div class="image-upload-input">
+                            <input id="file-input" name="uploadFile" type="file" required/>
+                        </div>
+                        <div class="text-center pdd-top-10">
+                            <p style="font-size: 15pt"> 버튼을 눌러 동영상을 선택해주세요. </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-enroll-div col-md-4">
+                    <div class="video-supplement-div">
+                        <p class="font-size-17 text-bold">기본 정보</p>
+                        <div class="form-group">
+                            <label for="title" class="font-size-13">제목 :</label>
+                            <input class="form-control" id="title" name="title"
+                                   th:value="${#strings.isEmpty(video)? '' : video.title}"
+                                   type="text" maxlength="50">
+                            <br>
+                            <label for="description" class="font-size-13">설명 :</label>
+                            <textarea class="form-control" id="description" rows="15" name="description"
+                                      th:text="${#strings.isEmpty(video)? '' : video.description}" required></textarea>
+                        </div>
+                        <div class="form-group text-center">
+                            <button id="video-submit-button" type="submit" class="font-size-13 confirm-btn">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="/js/video-edit.js"></script>
+<th:block th:replace="fragments/script :: scriptFragment"/>
+
+<script th:if="${errors}" th:inline="javascript">
+    /* <![CDATA[ */
+    const initValue = [[ ${errors}]];
+    /* ]]> */
+
+    alert(initValue);
+
+</script>
+
+</body>
+</html>
